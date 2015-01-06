@@ -3,8 +3,10 @@
     
     var app = angular.module('app', [
         // Angular modules 
-        'ngAnimate',        // animations
-        'ngRoute'
+        'ngAnimate',
+        'ngRoute',
+        'ngSanitize',
+        'common'
     ]);
     
     // Handle routing errors and success events
