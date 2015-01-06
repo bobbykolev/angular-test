@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
 
     var app = angular.module('app');
@@ -14,26 +14,56 @@
 
     app.value('config', config);
 
-    app.config(['$routeProvider', function($routeProvider) {
-        $routeProvider.
-          when('/', {
-            templateUrl: 'app/modules/home/home.html',
-            controller: 'Home',
-            controllerAs: 'that'
-          }).
-          when('/admin', {
-            templateUrl: 'app/modules/admin/admin.html',
-            controller: 'Admin',
-            controllerAs: 'that'
-          }).
-          otherwise({
-            redirectTo: '/'
-          });
-    }]);
+    app.config(['commonConfigProvider', setEvensConfig]);
 
-    app.config(['commonConfigProvider', function (cfg) {
-        cfg.config.controllerActivateSuccessEvent = config.events.controllerActivateSuccess;
-        cfg.config.spinnerToggleEvent = config.events.spinnerToggle;
-    }]);
+    function setEvensConfig(commonConfigProvider) {
+        commonConfigProvider.config.controllerActivateSuccessEvent = config.events.controllerActivateSuccess;
+        commonConfigProvider.config.spinnerToggleEvent = config.events.spinnerToggle;
+    }
+
+    //Routes
+    app.constant('routes', getRoutes());
+
+    // Configure the routes and route resolvers
+    app.config(['$routeProvider', 'routes', routeConfigurator]);
+
+    function routeConfigurator($routeProvider, routes) {
+
+        routes.forEach(function(r) {
+            $routeProvider.when(r.url, r.config);
+        });
+        $routeProvider.otherwise({
+            redirectTo: '/'
+        });
+    }
+
+    // Define the routes 
+    function getRoutes() {
+        return [{
+            url: '/',
+            config: {
+                templateUrl: 'app/modules/home/home.html',
+                controller: 'Home',
+                controllerAs: 'that',
+                title: 'Home',
+                settings: {
+                    nav: 1,
+                    content: '<i class="fa fa-home"></i> Home'
+                }
+            }
+        }, {
+            url: '/admin',
+            config: {
+                templateUrl: 'app/modules/admin/admin.html',
+                controller: 'Admin',
+                controllerAs: 'that',
+                title: 'Admin',
+                settings: {
+                    nav: 2,
+                    content: '<i class="fa fa-cog"></i> Admin'
+                }
+            }
+        }];
+    }
 
 })();
