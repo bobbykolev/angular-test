@@ -27,6 +27,7 @@
             // common angular dependencies
             $broadcast: $broadcast,
             $q: $q,
+            getUnique: getUnique,
             // generic
             activateController: activateController
         };
@@ -42,6 +43,21 @@
 
 		function $broadcast() {
 			return $rootScope.$broadcast.apply($rootScope, arguments);
+		}
+
+		function getUnique(arr) {
+			var u = {}, uniqueArray = [];
+
+			for(var i = 0, l = arr.length; i < l; ++i){
+				if(u.hasOwnProperty(arr[i])) {
+					continue;
+				}
+
+				uniqueArray.push(arr[i]);
+				u[arr[i]] = 1;
+			}
+
+			return uniqueArray;
 		}
 	}
 
