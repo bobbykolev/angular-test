@@ -4,25 +4,18 @@
 	var app = angular.module('app');
 
 	app.controller('Home', Home);
-	Home.$inject = ['common', '$timeout', 'places'];
+	Home.$inject = ['common', '$timeout'];
 
-	function Home(common, $timeout, places) {
+	function Home(common, $timeout) {
 		var that = this;
-		that.people = [];
-		that.homeTxt = 'Home';
+
+		that.homeTxt = 'Bla bla home';
 
 		//$timeout(function(){activate()}, 2000);//test loading 
 		activate();
 
         function activate() {
-			var promises = [getPlaces()];
-			common.activateController(promises, 'home');
-        }
-
-        function getPlaces() {
-            return places.getPlaces().then(function (data) {
-				return that.places = data;
-			});
+			common.activateController([], 'home');
         }
 	}
 
